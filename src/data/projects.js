@@ -37,7 +37,6 @@ export const projects = [
     ],
     links: {
       github: 'https://github.com/Esteban-GH39/tablemaster',
-      demo: 'https://tablemaster.vercel.app',
     },
     image: null,
   },
