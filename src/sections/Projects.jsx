@@ -1,23 +1,41 @@
 import { motion } from 'framer-motion'
-import { ArrowUpRight, Github, Plus, Trophy } from 'lucide-react'
+import { ArrowUpRight, Github, Plus, Trophy, ScanEye } from 'lucide-react'
 import SectionHeading from '../components/SectionHeading'
 import Badge from '../components/Badge'
 import Button from '../components/Button'
 import { projects } from '../data/projects'
 import { useReveal } from '../hooks/useReveal'
 
+const previewConfig = {
+  tablemaster: {
+    label: 'Cuadro de eliminación directa',
+    icon: Trophy,
+    Preview: BracketPreview,
+  },
+  'vigilancia-ia': {
+    label: 'Detección en tiempo real',
+    icon: ScanEye,
+    Preview: SurveillancePreview,
+  },
+}
+
 function FeaturedProject({ project }) {
+  const config = previewConfig[project.id]
+  const PreviewIcon = config?.icon
+
   return (
     <div className="card relative overflow-hidden p-8 sm:p-10">
       <div className="absolute right-0 top-0 h-56 w-56 rounded-full bg-accent/10 blur-[90px]" aria-hidden="true" />
 
       <div className="relative flex flex-col gap-10 lg:flex-row lg:items-start">
-        {/* Preview visual: bracket mockup en lugar de una captura genérica */}
+        {/* Preview visual: mockup propio de cada proyecto en lugar de una captura genérica */}
         <div className="w-full max-w-sm shrink-0 rounded-xl border border-border bg-base/60 p-5">
-          <div className="mb-4 flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-accent-light/80">
-            <Trophy size={14} /> Cuadro de eliminación directa
-          </div>
-          <BracketPreview />
+          {config && (
+            <div className="mb-4 flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-accent-light/80">
+              <PreviewIcon size={14} /> {config.label}
+            </div>
+          )}
+          {config ? <config.Preview /> : <BracketPreview />}
         </div>
 
         <div className="flex-1">
@@ -111,6 +129,35 @@ function BracketPreview() {
   )
 }
 
+function SurveillancePreview() {
+  return (
+    <svg viewBox="0 0 260 160" className="w-full" aria-hidden="true">
+      {/* Marco de la "cámara" */}
+      <rect x="8" y="8" width="244" height="144" rx="8" fill="none" stroke="#243046" strokeWidth="2" />
+      {/* Cuadro de detección sobre una "persona" */}
+      <rect x="95" y="34" width="52" height="92" rx="4" fill="none" stroke="#38BDF8" strokeWidth="2" strokeDasharray="4 3" />
+      <circle cx="121" cy="52" r="10" fill="#243046" />
+      <rect x="105" y="66" width="32" height="54" rx="6" fill="#243046" />
+      <text x="98" y="30" fill="#38BDF8" fontSize="8" fontFamily="JetBrains Mono, monospace">
+        persona 0.94
+      </text>
+      {/* Líneas de escaneo */}
+      <line x1="8" y1="60" x2="252" y2="60" stroke="#2563EB" strokeWidth="1" opacity="0.35" />
+      <line x1="8" y1="104" x2="252" y2="104" stroke="#2563EB" strokeWidth="1" opacity="0.35" />
+      {/* Indicador REC */}
+      <circle cx="22" cy="22" r="4" fill="#EF4444" />
+      <text x="30" y="25" fill="#94A3B8" fontSize="8" fontFamily="JetBrains Mono, monospace">
+        REC · EN VIVO
+      </text>
+      {/* Alerta */}
+      <rect x="180" y="130" width="64" height="16" rx="4" fill="#1F2937" stroke="#EF4444" strokeWidth="1" />
+      <text x="188" y="141" fill="#F87171" fontSize="7" fontFamily="JetBrains Mono, monospace">
+        ALERTA: merodeo
+      </text>
+    </svg>
+  )
+}
+
 function PlaceholderCard() {
   return (
     <div className="card flex min-h-[220px] flex-col items-center justify-center gap-3 border-dashed p-8 text-center">
@@ -127,7 +174,7 @@ function PlaceholderCard() {
 
 export default function Projects() {
   const [ref, isVisible] = useReveal()
-  const featured = projects.find((p) => p.featured)
+  const featuredProjects = projects.filter((p) => p.featured && !p.placeholder)
 
   return (
     <section id="projects" className="container-page py-24 sm:py-32">
@@ -139,18 +186,21 @@ export default function Projects() {
         />
 
         <div className="mt-12 space-y-6">
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5 }}
-          >
-            {featured && <FeaturedProject project={featured} />}
-          </motion.div>
+          {featuredProjects.map((project, index) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 16 }}
+              animate={isVisible ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: index * 0.15 }}
+            >
+              <FeaturedProject project={project} />
+            </motion.div>
+          ))}
 
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: 0.15 }}
+            transition={{ duration: 0.5, delay: featuredProjects.length * 0.15 }}
           >
             <PlaceholderCard />
           </motion.div>
