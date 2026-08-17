@@ -49,6 +49,14 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
+          <a
+            href="https://blog-esteban.vercel.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-body text-sm text-ink-muted transition-colors hover:text-ink"
+          >
+            Blog
+          </a>
         </nav>
 
         <div className="hidden md:block">
@@ -79,6 +87,15 @@ export default function Navbar() {
                 {link.label}
               </a>
             ))}
+            <a
+              href="https://blog-esteban.vercel.app"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setOpen(false)}
+              className="rounded-lg px-2 py-3 font-body text-sm text-ink-muted transition-colors hover:bg-surface hover:text-ink"
+            >
+              Blog
+            </a>
             <Button href="/cv-esteban-giron.pdf" download variant="ghost" className="mt-2 justify-center">
               Descargar CV
             </Button>
