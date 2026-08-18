@@ -1,6 +1,3 @@
-// Proyectos mostrados en la sección Projects.
-// `featured: true` activa el layout ampliado en la tarjeta.
-
 export const projects = [
   {
     id: 'tablemaster',
@@ -77,6 +74,47 @@ export const projects = [
     links: {
       demo: 'https://vigilancia-ia-demo.onrender.com',
       github: 'https://github.com/Esteban-GH39/vigilancia-ia',
+    },
+    image: null,
+  },
+  {
+    id: 'parkfinder-api',
+    featured: false,
+    status: 'in-progress',
+    name: 'ParkFinder API',
+    tagline: 'Backend y API REST para gestión de parqueaderos, con arquitectura de microservicios.',
+    description:
+      'API backend para el sistema ParkFinder: administra parqueaderos, reservas, usuarios, pagos y notificaciones bajo un enfoque de microservicios.',
+    stack: ['Microservicios', 'REST API'],
+    links: {
+      github: 'https://github.com/Esteban-GH39/parkfinder-api',
+    },
+    image: null,
+  },
+  {
+    id: 'parkfinder-app',
+    featured: false,
+    status: 'in-progress',
+    name: 'ParkFinder App',
+    tagline: 'App móvil en Flutter para buscar, reservar y gestionar espacios de parqueo.',
+    description:
+      'Aplicación móvil desarrollada con Flutter, consumidora de ParkFinder API, para buscar parqueaderos cercanos, reservar espacio y administrar las reservas del usuario.',
+    stack: ['Flutter', 'Dart'],
+    links: {
+      github: 'https://github.com/Esteban-GH39/parkfinder-app',
+    },
+    image: null,
+  },
+  {
+    id: 'blog-esteban',
+    featured: false,
+    name: 'Blog personal',
+    tagline: 'Devlog construido con Astro + CMS headless.',
+    description:
+      'Blog personal donde comparto notas sobre los proyectos en los que trabajo y lo que voy aprendiendo en el camino.',
+    stack: ['Astro'],
+    links: {
+      github: 'https://github.com/Esteban-GH39/blog-esteban',
     },
     image: null,
   },

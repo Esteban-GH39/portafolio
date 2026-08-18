@@ -7,9 +7,6 @@ const variants = {
     'border border-border text-ink hover:border-accent-light/60 hover:text-accent-light',
 }
 
-/**
- * Botón reutilizable. Puede renderizarse como <a> (si recibe `href`) o <button>.
- */
 const Button = forwardRef(({ as, href, variant = 'primary', className = '', children, ...props }, ref) => {
   const Tag = href ? 'a' : as || 'button'
   const base =

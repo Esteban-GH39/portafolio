@@ -11,11 +11,6 @@ const NODES = [
 
 const IDS = NODES.map((n) => n.id)
 
-/**
- * Riel de navegación vertical inspirado en las llaves de eliminación directa
- * de TableMaster: cada sección es un "cruce" conectado por una línea de bracket.
- * Visible solo en pantallas grandes para no competir con el contenido en mobile.
- */
 export default function BracketRail() {
   const active = useActiveSection(IDS)
   const activeIndex = IDS.indexOf(active)
@@ -26,7 +21,6 @@ export default function BracketRail() {
       className="fixed left-8 top-1/2 z-40 hidden -translate-y-1/2 xl:block"
     >
       <div className="relative flex flex-col gap-9 pl-1">
-        {/* línea vertical de bracket */}
         <svg
           className="pointer-events-none absolute -left-[3px] top-2 h-[calc(100%-1rem)] w-1"
           preserveAspectRatio="none"

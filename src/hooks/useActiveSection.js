@@ -1,9 +1,5 @@
 import { useEffect, useState } from 'react'
 
-/**
- * Observa un conjunto de IDs de sección y devuelve cuál está actualmente
- * más visible en el viewport. Se usa para resaltar el nav y el bracket rail.
- */
 export function useActiveSection(sectionIds) {
   const [activeId, setActiveId] = useState(sectionIds[0])
 

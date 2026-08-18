@@ -1,6 +1,3 @@
-// Categorías de habilidades técnicas mostradas en la sección Skills.
-// Los iconos se importan desde lucide-react en el componente que consume este archivo.
-
 export const skillCategories = [
   {
     id: 'frontend',

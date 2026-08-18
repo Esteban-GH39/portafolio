@@ -1,7 +1,3 @@
-// Hitos mostrados en la sección "Mi trayectoria".
-// `set` funciona como etiqueta temática (inspirada en los sets del tenis de mesa),
-// no como un contador de pasos genérico.
-
 export const timeline = [
   {
     set: 'SET 01',

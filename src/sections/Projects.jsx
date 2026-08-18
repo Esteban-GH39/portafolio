@@ -158,6 +158,44 @@ function SurveillancePreview() {
   )
 }
 
+function CompactProjectCard({ project }) {
+  return (
+    <div className="card flex flex-col gap-4 p-6">
+      <div className="flex items-start justify-between gap-3">
+        <h3 className="font-display text-lg font-semibold text-ink">{project.name}</h3>
+        {project.status === 'in-progress' && (
+          <span className="shrink-0 rounded-full border border-amber-400/30 bg-amber-400/10 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-amber-300">
+            En construcción
+          </span>
+        )}
+      </div>
+
+      <p className="text-sm text-ink-muted">{project.tagline}</p>
+
+      {project.stack.length > 0 && (
+        <div className="flex flex-wrap gap-2">
+          {project.stack.map((tech) => (
+            <Badge key={tech}>{tech}</Badge>
+          ))}
+        </div>
+      )}
+
+      <div className="mt-auto flex flex-wrap gap-3 pt-2">
+        {project.links.demo && (
+          <Button href={project.links.demo} target="_blank" rel="noreferrer" variant="ghost" className="text-xs">
+            Demo <ArrowUpRight size={14} />
+          </Button>
+        )}
+        {project.links.github && (
+          <Button href={project.links.github} target="_blank" rel="noreferrer" variant="ghost" className="text-xs">
+            <Github size={14} /> GitHub
+          </Button>
+        )}
+      </div>
+    </div>
+  )
+}
+
 function PlaceholderCard() {
   return (
     <div className="card flex min-h-[220px] flex-col items-center justify-center gap-3 border-dashed p-8 text-center">
@@ -175,6 +213,7 @@ function PlaceholderCard() {
 export default function Projects() {
   const [ref, isVisible] = useReveal()
   const featuredProjects = projects.filter((p) => p.featured && !p.placeholder)
+  const otherProjects = projects.filter((p) => !p.featured && !p.placeholder)
 
   return (
     <section id="projects" className="container-page py-24 sm:py-32">
@@ -197,10 +236,23 @@ export default function Projects() {
             </motion.div>
           ))}
 
+          {otherProjects.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={isVisible ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: featuredProjects.length * 0.15 }}
+              className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+            >
+              {otherProjects.map((project) => (
+                <CompactProjectCard key={project.id} project={project} />
+              ))}
+            </motion.div>
+          )}
+
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: featuredProjects.length * 0.15 }}
+            transition={{ duration: 0.5, delay: (featuredProjects.length + 1) * 0.15 }}
           >
             <PlaceholderCard />
           </motion.div>

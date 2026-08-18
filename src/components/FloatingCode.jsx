@@ -27,7 +27,6 @@ export default function FloatingCode() {
     return () => clearTimeout(id)
   }, [typedLength])
 
-  // Reconstruye los segmentos coloreados respetando cuánto texto ya se "escribió"
   let remaining = typedLength
   const renderedSegments = SNIPPET.map((seg, i) => {
     const visible = seg.t.slice(0, Math.max(0, Math.min(seg.t.length, remaining)))
