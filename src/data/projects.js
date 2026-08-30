@@ -72,7 +72,7 @@ export const projects = [
       'Historial de eventos y alertas',
     ],
     links: {
-      demo: 'https://vigilancia-ia-demo.onrender.com',
+      demo: 'https://vigilancia-ia-1.onrender.com',
       github: 'https://github.com/Esteban-GH39/vigilancia-ia',
     },
     image: null,
