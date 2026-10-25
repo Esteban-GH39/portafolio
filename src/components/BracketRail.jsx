@@ -31,7 +31,7 @@ export default function BracketRail() {
             y1="0"
             x2="0.5"
             y2="100%"
-            stroke="#243046"
+            stroke="#2A2144"
             strokeWidth="2"
           />
           <line
@@ -39,12 +39,12 @@ export default function BracketRail() {
             y1="0"
             x2="0.5"
             y2={`${(activeIndex / (NODES.length - 1)) * 100}%`}
-            stroke="#38BDF8"
+            stroke="#A78BFA"
             strokeWidth="2"
           />
         </svg>
 
-        {NODES.map((node, i) => {
+        {NODES.map((node) => {
           const isActive = node.id === active
           return (
             <a
@@ -55,7 +55,7 @@ export default function BracketRail() {
               <span
                 className={`h-2.5 w-2.5 shrink-0 rounded-full border transition-all duration-300 ${
                   isActive
-                    ? 'scale-125 border-accent-light bg-accent-light shadow-[0_0_0_4px_rgba(56,189,248,0.15)]'
+                    ? 'scale-125 border-accent-light bg-accent-light shadow-[0_0_0_4px_rgba(167,139,250,0.15)]'
                     : 'border-border bg-base group-hover:border-accent-light/70'
                 }`}
               />

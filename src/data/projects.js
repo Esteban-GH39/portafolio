@@ -78,6 +78,87 @@ export const projects = [
     image: null,
   },
   {
+    id: 'taskflow',
+    featured: true,
+    name: 'TaskFlow',
+    tagline: 'Gestor de tareas con cuentas de usuario, filtros y estadísticas en vivo.',
+    description:
+      'Cada persona tiene su propio espacio protegido con inicio de sesión: crea, edita, filtra, busca y ordena sus tareas por estado, prioridad y fecha de vencimiento, con paginación y un resumen de cuántas están pendientes o vencidas.',
+    problem:
+      'Las listas de tareas sueltas (notas, chats, papeles) no permiten filtrar por estado o prioridad, no avisan de lo que ya venció y no separan las tareas de cada persona.',
+    solution:
+      'TaskFlow organiza las tareas por estado y prioridad, permite buscar por texto y ordenar por vencimiento, y muestra un resumen en vivo. Cada usuario solo ve y modifica lo suyo.',
+    architecture: [
+      { layer: 'Frontend', detail: 'React + Vite — Context API para la sesión, hooks propios y cambios de estado que se ven al instante.' },
+      { layer: 'Backend', detail: 'Node.js + Express 5 — API REST con autenticación JWT, contraseñas con bcrypt, helmet y límite de peticiones.' },
+      { layer: 'Validación', detail: 'Zod valida cada petición y devuelve errores claros por campo.' },
+      { layer: 'Base de datos', detail: 'SQLite — consultas parametrizadas con filtros, orden y paginación resueltos en SQL.' },
+      { layer: 'Calidad', detail: 'Pruebas de integración de la API con node:test, incluida una que comprueba el aislamiento entre usuarios.' },
+      { layer: 'Despliegue', detail: 'Render — un solo servicio sirve la API y el frontend compilado.' },
+    ],
+    challenges: [
+      'Garantizar que un usuario nunca vea ni modifique tareas de otro: cada consulta filtra por el dueño del token y una prueba lo verifica.',
+      'Evitar que una actualización parcial pise los campos que no se enviaron: un error real detectado al probar, ahora cubierto con una prueba de regresión.',
+      'Mostrar el cambio de estado al instante y revertirlo si el servidor lo rechaza, sin que una respuesta antigua pise a una más reciente.',
+    ],
+    stack: ['React', 'Node.js', 'Express', 'SQLite', 'JWT', 'Zod'],
+    features: [
+      'Registro e inicio de sesión',
+      'CRUD de tareas por usuario',
+      'Filtros por estado y prioridad',
+      'Búsqueda y orden por vencimiento',
+      'Paginación',
+      'Estadísticas y tareas vencidas',
+    ],
+    links: {
+      // demo: 'https://TU-SERVICIO-TASKFLOW.onrender.com', // ← descomenta y pon la URL de Render
+      github: 'https://github.com/Esteban-GH39/taskflow',
+    },
+    demoNote:
+      'El demo usa un plan gratuito: la primera carga puede tardar hasta un minuto y los datos se reinician cada cierto tiempo.',
+    image: null,
+  },
+  {
+    id: 'shortly',
+    featured: true,
+    name: 'Shortly',
+    tagline: 'Acortador de URLs con alias, caducidad y estadísticas de clics.',
+    description:
+      'Acorta una URL, personaliza el alias, ponle fecha de caducidad y mira cuántos clics recibe por día, de dónde llegan y desde qué tipo de dispositivo. No pide cuenta: cada navegador se identifica con un token anónimo.',
+    problem:
+      'Los enlaces largos son incómodos de compartir y, una vez enviados, no sabes si alguien los abrió, desde dónde ni cuándo.',
+    solution:
+      'Shortly genera un enlace corto (o el alias que elijas), redirige al destino y registra cada visita para mostrar los clics de los últimos 14 días, su origen y el dispositivo.',
+    architecture: [
+      { layer: 'Frontend', detail: 'React + Vite — useReducer para la lista y una gráfica de barras dibujada en SVG, sin librerías.' },
+      { layer: 'Backend', detail: 'Node.js + Express 5 — API REST y redirecciones, con límite de creación de enlaces.' },
+      { layer: 'Códigos', detail: 'Generación en base62 con crypto, resolviendo colisiones y bloqueando alias reservados.' },
+      { layer: 'Caché', detail: 'Caché LRU propia (estructura Map) para resolver los enlaces más visitados sin tocar la base de datos.' },
+      { layer: 'Base de datos', detail: 'SQLite — transacciones, índices y agregaciones con GROUP BY para las estadísticas.' },
+      { layer: 'Calidad', detail: '18 pruebas unitarias y de integración con node:test.' },
+    ],
+    challenges: [
+      'Usar redirección 302 en lugar de 301 para que el navegador no la guarde en caché y cada visita quede contada.',
+      'Impedir el abuso del servicio: se bloquean protocolos como javascript: y data:, los alias reservados y los enlaces al propio servicio.',
+      'Invalidar la caché al borrar un enlace para que deje de funcionar de inmediato, sin servir datos viejos.',
+    ],
+    stack: ['React', 'Node.js', 'Express', 'SQLite', 'Zod'],
+    features: [
+      'Alias personalizados',
+      'Fecha de caducidad',
+      'Clics por día, origen y dispositivo',
+      'Caché LRU',
+      'Copia automática del enlace nuevo',
+    ],
+    links: {
+      demo: 'https://shortly-61n9.onrender.com',
+      github: 'https://github.com/Esteban-GH39/shortly',
+    },
+    demoNote:
+      'El demo usa un plan gratuito: la primera carga puede tardar hasta un minuto y los enlaces creados se borran cuando el servicio se reinicia.',
+    image: null,
+  },
+  {
     id: 'parkfinder-api',
     featured: false,
     status: 'in-progress',

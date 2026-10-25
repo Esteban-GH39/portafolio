@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion'
-import { ArrowUpRight, Github, Plus, Trophy, ScanEye } from 'lucide-react'
+import { ArrowUpRight, BarChart3, Github, ListChecks, Plus, Trophy, ScanEye } from 'lucide-react'
 import SectionHeading from '../components/SectionHeading'
 import Badge from '../components/Badge'
 import Button from '../components/Button'
+import ScreenshotGallery from '../components/ScreenshotGallery'
 import { projects } from '../data/projects'
 import { useReveal } from '../hooks/useReveal'
 
@@ -16,6 +17,16 @@ const previewConfig = {
     label: 'Detección en tiempo real',
     icon: ScanEye,
     Preview: SurveillancePreview,
+  },
+  taskflow: {
+    label: 'Tareas por estado y prioridad',
+    icon: ListChecks,
+    Preview: TaskPreview,
+  },
+  shortly: {
+    label: 'Clics de los últimos días',
+    icon: BarChart3,
+    Preview: ClicksPreview,
   },
 }
 
@@ -100,8 +111,15 @@ function FeaturedProject({ project }) {
               </Button>
             )}
           </div>
+
+          {project.demoNote && project.links.demo && (
+            <p className="mt-4 max-w-xl text-xs leading-relaxed text-ink-faint">{project.demoNote}</p>
+          )}
         </div>
       </div>
+
+      {/* Espacio para capturas reales: ver src/assets/screenshots/LEEME.txt */}
+      <ScreenshotGallery projectId={project.id} projectName={project.name} />
     </div>
   )
 }
@@ -110,19 +128,19 @@ function BracketPreview() {
   return (
     <svg viewBox="0 0 260 160" className="w-full" aria-hidden="true">
       {[24, 64, 104, 144].map((y) => (
-        <line key={y} x1="0" y1={y} x2="60" y2={y} stroke="#243046" strokeWidth="2" />
+        <line key={y} x1="0" y1={y} x2="60" y2={y} stroke="#2A2144" strokeWidth="2" />
       ))}
-      <line x1="60" y1="24" x2="60" y2="64" stroke="#243046" strokeWidth="2" />
-      <line x1="60" y1="104" x2="60" y2="144" stroke="#243046" strokeWidth="2" />
-      <line x1="60" y1="44" x2="130" y2="44" stroke="#2563EB" strokeWidth="2" />
-      <line x1="60" y1="124" x2="130" y2="124" stroke="#243046" strokeWidth="2" />
-      <line x1="130" y1="44" x2="130" y2="124" stroke="#243046" strokeWidth="2" />
-      <line x1="130" y1="84" x2="200" y2="84" stroke="#38BDF8" strokeWidth="2" />
+      <line x1="60" y1="24" x2="60" y2="64" stroke="#2A2144" strokeWidth="2" />
+      <line x1="60" y1="104" x2="60" y2="144" stroke="#2A2144" strokeWidth="2" />
+      <line x1="60" y1="44" x2="130" y2="44" stroke="#7C3AED" strokeWidth="2" />
+      <line x1="60" y1="124" x2="130" y2="124" stroke="#2A2144" strokeWidth="2" />
+      <line x1="130" y1="44" x2="130" y2="124" stroke="#2A2144" strokeWidth="2" />
+      <line x1="130" y1="84" x2="200" y2="84" stroke="#A78BFA" strokeWidth="2" />
       {[24, 64, 104, 144].map((y, i) => (
-        <circle key={y} cx="0" cy={y} r="4" fill={i === 0 ? '#38BDF8' : '#475569'} />
+        <circle key={y} cx="0" cy={y} r="4" fill={i === 0 ? '#A78BFA' : '#5B5378'} />
       ))}
-      <circle cx="200" cy="84" r="5" fill="#38BDF8" />
-      <text x="204" y="88" fill="#94A3B8" fontSize="9" fontFamily="JetBrains Mono, monospace">
+      <circle cx="200" cy="84" r="5" fill="#A78BFA" />
+      <text x="204" y="88" fill="#A39BC2" fontSize="9" fontFamily="JetBrains Mono, monospace">
         Campeón
       </text>
     </svg>
@@ -133,26 +151,91 @@ function SurveillancePreview() {
   return (
     <svg viewBox="0 0 260 160" className="w-full" aria-hidden="true">
       {/* Marco de la "cámara" */}
-      <rect x="8" y="8" width="244" height="144" rx="8" fill="none" stroke="#243046" strokeWidth="2" />
+      <rect x="8" y="8" width="244" height="144" rx="8" fill="none" stroke="#2A2144" strokeWidth="2" />
       {/* Cuadro de detección sobre una "persona" */}
-      <rect x="95" y="34" width="52" height="92" rx="4" fill="none" stroke="#38BDF8" strokeWidth="2" strokeDasharray="4 3" />
-      <circle cx="121" cy="52" r="10" fill="#243046" />
-      <rect x="105" y="66" width="32" height="54" rx="6" fill="#243046" />
-      <text x="98" y="30" fill="#38BDF8" fontSize="8" fontFamily="JetBrains Mono, monospace">
+      <rect x="95" y="34" width="52" height="92" rx="4" fill="none" stroke="#A78BFA" strokeWidth="2" strokeDasharray="4 3" />
+      <circle cx="121" cy="52" r="10" fill="#2A2144" />
+      <rect x="105" y="66" width="32" height="54" rx="6" fill="#2A2144" />
+      <text x="98" y="30" fill="#A78BFA" fontSize="8" fontFamily="JetBrains Mono, monospace">
         persona 0.94
       </text>
       {/* Líneas de escaneo */}
-      <line x1="8" y1="60" x2="252" y2="60" stroke="#2563EB" strokeWidth="1" opacity="0.35" />
-      <line x1="8" y1="104" x2="252" y2="104" stroke="#2563EB" strokeWidth="1" opacity="0.35" />
+      <line x1="8" y1="60" x2="252" y2="60" stroke="#7C3AED" strokeWidth="1" opacity="0.35" />
+      <line x1="8" y1="104" x2="252" y2="104" stroke="#7C3AED" strokeWidth="1" opacity="0.35" />
       {/* Indicador REC */}
       <circle cx="22" cy="22" r="4" fill="#EF4444" />
-      <text x="30" y="25" fill="#94A3B8" fontSize="8" fontFamily="JetBrains Mono, monospace">
+      <text x="30" y="25" fill="#A39BC2" fontSize="8" fontFamily="JetBrains Mono, monospace">
         REC · EN VIVO
       </text>
       {/* Alerta */}
-      <rect x="180" y="130" width="64" height="16" rx="4" fill="#1F2937" stroke="#EF4444" strokeWidth="1" />
+      <rect x="180" y="130" width="64" height="16" rx="4" fill="#1A1226" stroke="#EF4444" strokeWidth="1" />
       <text x="188" y="141" fill="#F87171" fontSize="7" fontFamily="JetBrains Mono, monospace">
         ALERTA: merodeo
+      </text>
+    </svg>
+  )
+}
+
+function TaskPreview() {
+  const rows = [
+    { y: 24, done: true, width: 120 },
+    { y: 62, done: false, width: 150 },
+    { y: 100, done: false, width: 100 },
+  ]
+  return (
+    <svg viewBox="0 0 260 160" className="w-full" aria-hidden="true">
+      {rows.map((row) => (
+        <g key={row.y}>
+          <rect x="8" y={row.y} width="244" height="30" rx="8" fill="#171028" stroke="#2A2144" strokeWidth="2" />
+          <rect
+            x="18"
+            y={row.y + 8}
+            width="14"
+            height="14"
+            rx="4"
+            fill={row.done ? '#7C3AED' : 'none'}
+            stroke={row.done ? '#7C3AED' : '#5B5378'}
+            strokeWidth="2"
+          />
+          {row.done && (
+            <path d={`M21 ${row.y + 15} l3 3 l5 -6`} stroke="#F5F3FF" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          )}
+          <rect x="42" y={row.y + 11} width={row.width} height="8" rx="4" fill={row.done ? '#2A2144' : '#5B5378'} />
+        </g>
+      ))}
+      <rect x="196" y="35" width="44" height="12" rx="6" fill="none" stroke="#A78BFA" strokeWidth="1.5" />
+      <text x="203" y="44" fill="#A78BFA" fontSize="7" fontFamily="JetBrains Mono, monospace">
+        alta
+      </text>
+      <text x="8" y="150" fill="#A39BC2" fontSize="8" fontFamily="JetBrains Mono, monospace">
+        3 tareas · 1 hecha
+      </text>
+    </svg>
+  )
+}
+
+function ClicksPreview() {
+  const bars = [14, 26, 18, 40, 32, 58, 46, 70, 52, 84, 64, 96]
+  return (
+    <svg viewBox="0 0 260 160" className="w-full" aria-hidden="true">
+      <text x="8" y="16" fill="#A78BFA" fontSize="9" fontFamily="JetBrains Mono, monospace">
+        shortly.app/mi-portafolio
+      </text>
+      <line x1="8" y1="140" x2="252" y2="140" stroke="#2A2144" strokeWidth="2" />
+      {bars.map((h, i) => (
+        <rect
+          key={i}
+          x={14 + i * 20}
+          y={140 - h}
+          width="12"
+          height={h}
+          rx="3"
+          fill={i === bars.length - 1 ? '#A78BFA' : '#7C3AED'}
+          opacity={i === bars.length - 1 ? 1 : 0.7}
+        />
+      ))}
+      <text x="8" y="154" fill="#A39BC2" fontSize="8" fontFamily="JetBrains Mono, monospace">
+        últimos 14 días
       </text>
     </svg>
   )

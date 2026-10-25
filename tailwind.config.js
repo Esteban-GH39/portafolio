@@ -4,18 +4,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        base: '#0F172A',
-        elevated: '#141F38',
-        surface: '#1B2942',
-        border: '#243046',
+        // Paleta morado + negro. Se conservan los mismos nombres de token,
+        // así todos los componentes existentes cambian de tema sin tocarlos.
+        base: '#07050D',
+        elevated: '#0E0A1D',
+        surface: '#171028',
+        border: '#2A2144',
         accent: {
-          DEFAULT: '#2563EB',
-          light: '#38BDF8',
+          DEFAULT: '#7C3AED',
+          light: '#A78BFA',
         },
         ink: {
-          DEFAULT: '#F8FAFC',
-          muted: '#94A3B8',
-          faint: '#64748B',
+          DEFAULT: '#F5F3FF',
+          muted: '#A39BC2',
+          faint: '#8A82A6',
         },
       },
       fontFamily: {
@@ -24,11 +26,11 @@ export default {
         mono: ['"JetBrains Mono"', 'monospace'],
       },
       backgroundImage: {
-        'accent-gradient': 'linear-gradient(135deg, #2563EB 0%, #38BDF8 100%)',
-        'radial-fade': 'radial-gradient(circle at top, rgba(37,99,235,0.18), transparent 60%)',
+        'accent-gradient': 'linear-gradient(135deg, #6D28D9 0%, #A78BFA 100%)',
+        'radial-fade': 'radial-gradient(circle at top, rgba(124,58,237,0.22), transparent 60%)',
       },
       boxShadow: {
-        glow: '0 0 0 1px rgba(56,189,248,0.15), 0 20px 60px -20px rgba(37,99,235,0.35)',
+        glow: '0 0 0 1px rgba(167,139,250,0.18), 0 20px 60px -20px rgba(124,58,237,0.45)',
       },
       keyframes: {
         blink: {

@@ -29,12 +29,12 @@ export default function Navbar() {
       <div className="container-page flex h-16 items-center justify-between">
         <a href="#hero" className="flex items-center gap-2 font-display font-semibold tracking-tight">
           <svg width="26" height="26" viewBox="0 0 64 64" aria-hidden="true">
-            <rect width="64" height="64" rx="14" fill="#1B2942" />
-            <path d="M16 18 L16 32 L28 32" stroke="#38BDF8" strokeWidth="4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-            <path d="M16 46 L16 32" stroke="#38BDF8" strokeWidth="4" fill="none" strokeLinecap="round" />
-            <circle cx="44" cy="24" r="5" fill="#2563EB" />
-            <circle cx="44" cy="40" r="5" fill="#2563EB" />
-            <path d="M28 32 L38 24 M28 32 L38 40" stroke="#2563EB" strokeWidth="4" strokeLinecap="round" />
+            <rect width="64" height="64" rx="14" fill="#171028" />
+            <path d="M16 18 L16 32 L28 32" stroke="#A78BFA" strokeWidth="4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M16 46 L16 32" stroke="#A78BFA" strokeWidth="4" fill="none" strokeLinecap="round" />
+            <circle cx="44" cy="24" r="5" fill="#7C3AED" />
+            <circle cx="44" cy="40" r="5" fill="#7C3AED" />
+            <path d="M28 32 L38 24 M28 32 L38 40" stroke="#7C3AED" strokeWidth="4" strokeLinecap="round" />
           </svg>
           <span className="text-ink">Esteban Girón</span>
         </a>
