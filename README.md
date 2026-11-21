@@ -7,14 +7,13 @@ Link: https://portafolio-delta-livid.vercel.app/#hero
 
 ---
 
-## ✨ Características
+## Características
 
 - Landing page con hero animado y snippet de código en vivo.
 - Secciones: Hero, Sobre mí, Habilidades, Proyectos, Trayectoria y Contacto.
 - Tema morado y negro con fondo animado (campo de flujo en canvas que reacciona al cursor y respeta "reducir movimiento").
-- Cada proyecto destacado tiene tres espacios para capturas: copia las imágenes a `src/assets/screenshots/` con los nombres de `LEEME.txt` y aparecen solas.
 
-## 🛠️ Tecnologías
+## Tecnologías
 
 | Categoría | Tecnologías |
 |---|---|
