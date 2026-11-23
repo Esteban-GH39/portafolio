@@ -1,13 +1,5 @@
 import { useEffect, useRef } from 'react'
 
-/**
- * Fondo animado: un campo de flujo. Cientos de partículas siguen un campo de ángulos que
- * cambia despacio con el tiempo y dejan una estela que se desvanece. Cerca del cursor,
- * las líneas giran alrededor de él.
- *
- * Va fijo detrás de todo el contenido (z-0) y no captura clics.
- * Con "reducir movimiento" activo en el sistema se dibuja una sola imagen fija.
- */
 const COLORS = ['rgba(139, 92, 246, 0.55)', 'rgba(216, 204, 255, 0.30)']
 const SPEED = 0.9
 const POINTER_RADIUS = 220
@@ -33,7 +25,6 @@ export default function FlowBackground() {
       return { x, y, px: x, py: y, life: 90 + Math.random() * 240, tone }
     }
 
-    // Ángulo del campo en (x, y): suma de ondas suaves, sin librería de ruido.
     const angleAt = (x, y) => {
       let a =
         Math.sin(x * 0.0035 + time * 0.6) +
@@ -60,7 +51,6 @@ export default function FlowBackground() {
     const step = () => {
       time += 0.0016
 
-      // Desvanece lo dibujado antes; deja ver el fondo CSS que hay debajo del canvas.
       ctx.globalCompositeOperation = 'destination-out'
       ctx.fillStyle = 'rgba(0, 0, 0, 0.045)'
       ctx.fillRect(0, 0, width, height)
@@ -99,7 +89,6 @@ export default function FlowBackground() {
       frame = requestAnimationFrame(loop)
     }
 
-    // Con "reducir movimiento": imagen fija con estelas ya formadas, sin animación.
     const paintStill = () => {
       cancelAnimationFrame(frame)
       for (let i = 0; i < 380; i++) step()

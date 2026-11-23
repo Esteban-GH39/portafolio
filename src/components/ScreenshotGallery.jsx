@@ -2,10 +2,6 @@ import { useRef, useState } from 'react'
 import { ImagePlus, X } from 'lucide-react'
 import { getScreenshots } from '../data/screenshots'
 
-/**
- * Tres espacios de captura por proyecto. Si el archivo existe en src/assets/screenshots/
- * se muestra la imagen (con zoom al hacer clic); si no, queda un recuadro vacío.
- */
 export default function ScreenshotGallery({ projectId, projectName }) {
   const slots = getScreenshots(projectId)
   const dialogRef = useRef(null)

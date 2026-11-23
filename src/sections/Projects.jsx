@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion'
-import { ArrowUpRight, BarChart3, Github, ListChecks, Plus, Trophy, ScanEye } from 'lucide-react'
+import { ArrowUpRight, BarChart3, Gamepad2, Github, ListChecks, Newspaper, ParkingCircle, Plus, ScanEye, ServerCog, Trophy } from 'lucide-react'
 import SectionHeading from '../components/SectionHeading'
 import Badge from '../components/Badge'
 import Button from '../components/Button'
-import ScreenshotGallery from '../components/ScreenshotGallery'
+import ProjectMedia from '../components/ProjectMedia'
 import { projects } from '../data/projects'
 import { useReveal } from '../hooks/useReveal'
 
@@ -28,18 +28,40 @@ const previewConfig = {
     icon: BarChart3,
     Preview: ClicksPreview,
   },
+  'tienda-cqrs': {
+    label: 'Del comando a la pantalla',
+    icon: ServerCog,
+    Preview: CqrsPreview,
+  },
+  'sporty-smash': {
+    label: 'Tres balones en línea',
+    icon: Gamepad2,
+    Preview: MatchPreview,
+  },
+  parkfinder: {
+    label: 'Parqueadero cerca de ti',
+    icon: ParkingCircle,
+    Preview: ParkingPreview,
+  },
+  'blog-esteban': {
+    label: 'Notas de desarrollo',
+    icon: Newspaper,
+    Preview: BlogPreview,
+  },
 }
 
-function FeaturedProject({ project }) {
+function ProjectCard({ project }) {
   const config = previewConfig[project.id]
   const PreviewIcon = config?.icon
+  const repoLinks =
+    project.links.repos ?? (project.links.github ? [{ label: 'GitHub', url: project.links.github }] : [])
 
   return (
     <div className="card relative overflow-hidden p-8 sm:p-10">
       <div className="absolute right-0 top-0 h-56 w-56 rounded-full bg-accent/10 blur-[90px]" aria-hidden="true" />
 
       <div className="relative flex flex-col gap-10 lg:flex-row lg:items-start">
-        {/* Preview visual: mockup propio de cada proyecto en lugar de una captura genérica */}
+
         <div className="w-full max-w-sm shrink-0 rounded-xl border border-border bg-base/60 p-5">
           {config && (
             <div className="mb-4 flex items-center gap-2 font-mono text-[11px] uppercase tracking-widest text-accent-light/80">
@@ -50,52 +72,71 @@ function FeaturedProject({ project }) {
         </div>
 
         <div className="flex-1">
-          <span className="set-label">Proyecto destacado</span>
+          <div className="flex flex-wrap items-center gap-3">
+            <span className="set-label">{project.featured ? 'Proyecto destacado' : 'Proyecto'}</span>
+            {project.status === 'in-progress' && (
+              <span className="rounded-full border border-amber-400/30 bg-amber-400/10 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-amber-300">
+                En construcción
+              </span>
+            )}
+          </div>
           <h3 className="mt-2 font-display text-2xl font-semibold text-ink sm:text-3xl">{project.name}</h3>
           <p className="mt-2 text-ink-muted">{project.tagline}</p>
 
           <p className="mt-5 text-sm leading-relaxed text-ink-muted">{project.description}</p>
 
-          <div className="mt-6 grid gap-5 sm:grid-cols-2">
-            <div>
-              <h4 className="font-mono text-xs uppercase tracking-wider text-ink-faint">Problema</h4>
-              <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">{project.problem}</p>
+          {(project.problem || project.solution) && (
+            <div className="mt-6 grid gap-5 sm:grid-cols-2">
+              {project.problem && (
+                <div>
+                  <h4 className="font-mono text-xs uppercase tracking-wider text-ink-faint">Problema</h4>
+                  <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">{project.problem}</p>
+                </div>
+              )}
+              {project.solution && (
+                <div>
+                  <h4 className="font-mono text-xs uppercase tracking-wider text-ink-faint">Solución</h4>
+                  <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">{project.solution}</p>
+                </div>
+              )}
             </div>
-            <div>
-              <h4 className="font-mono text-xs uppercase tracking-wider text-ink-faint">Solución</h4>
-              <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">{project.solution}</p>
+          )}
+
+          {project.architecture?.length > 0 && (
+            <div className="mt-6">
+              <h4 className="font-mono text-xs uppercase tracking-wider text-ink-faint">Arquitectura</h4>
+              <ul className="mt-2 space-y-1.5">
+                {project.architecture.map((row) => (
+                  <li key={row.layer} className="flex flex-col text-sm text-ink-muted sm:flex-row sm:gap-2">
+                    <span className="shrink-0 font-medium text-ink">{row.layer}:</span>
+                    <span>{row.detail}</span>
+                  </li>
+                ))}
+              </ul>
             </div>
-          </div>
+          )}
 
-          <div className="mt-6">
-            <h4 className="font-mono text-xs uppercase tracking-wider text-ink-faint">Arquitectura</h4>
-            <ul className="mt-2 space-y-1.5">
-              {project.architecture.map((row) => (
-                <li key={row.layer} className="flex flex-col text-sm text-ink-muted sm:flex-row sm:gap-2">
-                  <span className="shrink-0 font-medium text-ink">{row.layer}:</span>
-                  <span>{row.detail}</span>
-                </li>
+          {project.challenges?.length > 0 && (
+            <div className="mt-6">
+              <h4 className="font-mono text-xs uppercase tracking-wider text-ink-faint">Retos técnicos</h4>
+              <ul className="mt-2 space-y-1.5">
+                {project.challenges.map((challenge) => (
+                  <li key={challenge} className="flex gap-2 text-sm text-ink-muted">
+                    <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-accent-light" />
+                    {challenge}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
+          {project.stack.length > 0 && (
+            <div className="mt-6 flex flex-wrap gap-2">
+              {project.stack.map((tech) => (
+                <Badge key={tech}>{tech}</Badge>
               ))}
-            </ul>
-          </div>
-
-          <div className="mt-6">
-            <h4 className="font-mono text-xs uppercase tracking-wider text-ink-faint">Retos técnicos</h4>
-            <ul className="mt-2 space-y-1.5">
-              {project.challenges.map((challenge) => (
-                <li key={challenge} className="flex gap-2 text-sm text-ink-muted">
-                  <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-accent-light" />
-                  {challenge}
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="mt-6 flex flex-wrap gap-2">
-            {project.stack.map((tech) => (
-              <Badge key={tech}>{tech}</Badge>
-            ))}
-          </div>
+            </div>
+          )}
 
           <div className="mt-6 flex flex-wrap gap-3">
             {project.links.demo && (
@@ -104,12 +145,12 @@ function FeaturedProject({ project }) {
                 <ArrowUpRight size={16} className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
               </Button>
             )}
-            {project.links.github && (
-              <Button href={project.links.github} target="_blank" rel="noreferrer" variant="ghost">
+            {repoLinks.map((repo) => (
+              <Button key={repo.url} href={repo.url} target="_blank" rel="noreferrer" variant="ghost">
                 <Github size={16} />
-                GitHub
+                {repo.label}
               </Button>
-            )}
+            ))}
           </div>
 
           {project.demoNote && project.links.demo && (
@@ -118,8 +159,7 @@ function FeaturedProject({ project }) {
         </div>
       </div>
 
-      {/* Espacio para capturas reales: ver src/assets/screenshots/LEEME.txt */}
-      <ScreenshotGallery projectId={project.id} projectName={project.name} />
+      <ProjectMedia project={project} />
     </div>
   )
 }
@@ -241,41 +281,97 @@ function ClicksPreview() {
   )
 }
 
-function CompactProjectCard({ project }) {
+function CqrsPreview() {
+  const box = (x, y, w, label, color) => (
+    <g key={label}>
+      <rect x={x} y={y} width={w} height="26" rx="6" fill="#171028" stroke={color} strokeWidth="2" />
+      <text x={x + w / 2} y={y + 17} textAnchor="middle" fill="#A39BC2" fontSize="8" fontFamily="JetBrains Mono, monospace">
+        {label}
+      </text>
+    </g>
+  )
   return (
-    <div className="card flex flex-col gap-4 p-6">
-      <div className="flex items-start justify-between gap-3">
-        <h3 className="font-display text-lg font-semibold text-ink">{project.name}</h3>
-        {project.status === 'in-progress' && (
-          <span className="shrink-0 rounded-full border border-amber-400/30 bg-amber-400/10 px-2.5 py-1 font-mono text-[10px] uppercase tracking-wider text-amber-300">
-            En construcción
-          </span>
-        )}
-      </div>
+    <svg viewBox="0 0 260 160" className="w-full" aria-hidden="true">
+      <path d="M52 38 V70 M52 96 V122 M130 83 H110 M208 38 V70 M208 96 V122" stroke="#5B5378" strokeWidth="2" fill="none" />
+      <path d="M92 83 H168" stroke="#7C3AED" strokeWidth="2" strokeDasharray="5 4" />
+      {box(14, 12, 76, 'Comando', '#A78BFA')}
+      {box(170, 12, 76, 'Consulta', '#A78BFA')}
+      {box(14, 70, 76, 'PostgreSQL', '#2A2144')}
+      {box(170, 70, 76, 'MongoDB', '#2A2144')}
+      {box(92, 70, 76, 'Kafka', '#7C3AED')}
+      {box(14, 126, 232, 'RabbitMQ + WebSocket → todas las pantallas', '#2A2144')}
+    </svg>
+  )
+}
 
-      <p className="text-sm text-ink-muted">{project.tagline}</p>
-
-      {project.stack.length > 0 && (
-        <div className="flex flex-wrap gap-2">
-          {project.stack.map((tech) => (
-            <Badge key={tech}>{tech}</Badge>
-          ))}
-        </div>
+function MatchPreview() {
+  const colors = ['#7C3AED', '#A78BFA', '#EF4444', '#F59E0B']
+  const grid = [
+    [0, 1, 2, 3, 1],
+    [2, 2, 2, 0, 3],
+    [1, 3, 0, 1, 0],
+    [3, 0, 1, 2, 2],
+  ]
+  return (
+    <svg viewBox="0 0 260 160" className="w-full" aria-hidden="true">
+      {grid.map((row, r) =>
+        row.map((c, i) => (
+          <circle
+            key={`${r}-${i}`}
+            cx={30 + i * 50}
+            cy={26 + r * 34}
+            r="13"
+            fill={colors[c]}
+            opacity={r === 1 && i < 3 ? 1 : 0.55}
+            stroke={r === 1 && i < 3 ? '#F5F3FF' : 'none'}
+            strokeWidth="2"
+          />
+        ))
       )}
+      <text x="8" y="155" fill="#A39BC2" fontSize="8" fontFamily="JetBrains Mono, monospace">
+        J1 · 2:30
+      </text>
+      <text x="252" y="155" textAnchor="end" fill="#A39BC2" fontSize="8" fontFamily="JetBrains Mono, monospace">
+        J2 · 2:30
+      </text>
+    </svg>
+  )
+}
 
-      <div className="mt-auto flex flex-wrap gap-3 pt-2">
-        {project.links.demo && (
-          <Button href={project.links.demo} target="_blank" rel="noreferrer" variant="ghost" className="text-xs">
-            Demo <ArrowUpRight size={14} />
-          </Button>
-        )}
-        {project.links.github && (
-          <Button href={project.links.github} target="_blank" rel="noreferrer" variant="ghost" className="text-xs">
-            <Github size={14} /> GitHub
-          </Button>
-        )}
-      </div>
-    </div>
+function ParkingPreview() {
+  return (
+    <svg viewBox="0 0 260 160" className="w-full" aria-hidden="true">
+      {/* Calles del mapa */}
+      <path d="M0 110 H260 M70 0 V160 M180 0 V160" stroke="#2A2144" strokeWidth="2" fill="none" />
+      {/* Ruta hacia el parqueadero */}
+      <path d="M24 140 V110 H70 V60 H180" stroke="#7C3AED" strokeWidth="3" strokeDasharray="6 4" fill="none" strokeLinecap="round" />
+      <circle cx="24" cy="140" r="5" fill="#A78BFA" />
+      {/* Pin con la P de parqueadero */}
+      <path d="M180 60 c-14 -12 -22 -22 -22 -34 a22 22 0 0 1 44 0 c0 12 -8 22 -22 34z" fill="#171028" stroke="#A78BFA" strokeWidth="2" />
+      <text x="173" y="33" fill="#A78BFA" fontSize="18" fontWeight="700" fontFamily="JetBrains Mono, monospace">
+        P
+      </text>
+      <text x="252" y="150" textAnchor="end" fill="#A39BC2" fontSize="8" fontFamily="JetBrains Mono, monospace">
+        12 cupos libres
+      </text>
+    </svg>
+  )
+}
+
+function BlogPreview() {
+  return (
+    <svg viewBox="0 0 260 160" className="w-full" aria-hidden="true">
+      <rect x="8" y="8" width="244" height="144" rx="8" fill="#171028" stroke="#2A2144" strokeWidth="2" />
+      <rect x="24" y="26" width="140" height="10" rx="5" fill="#A78BFA" />
+      <rect x="24" y="52" width="212" height="7" rx="3.5" fill="#5B5378" />
+      <rect x="24" y="68" width="190" height="7" rx="3.5" fill="#2A2144" />
+      <rect x="24" y="84" width="200" height="7" rx="3.5" fill="#2A2144" />
+      <rect x="24" y="100" width="120" height="7" rx="3.5" fill="#2A2144" />
+      <rect x="24" y="124" width="48" height="14" rx="7" fill="none" stroke="#7C3AED" strokeWidth="1.5" />
+      <text x="33" y="134" fill="#A78BFA" fontSize="7" fontFamily="JetBrains Mono, monospace">
+        devlog
+      </text>
+    </svg>
   )
 }
 
@@ -295,8 +391,7 @@ function PlaceholderCard() {
 
 export default function Projects() {
   const [ref, isVisible] = useReveal()
-  const featuredProjects = projects.filter((p) => p.featured && !p.placeholder)
-  const otherProjects = projects.filter((p) => !p.featured && !p.placeholder)
+  const items = projects.filter((p) => !p.placeholder)
 
   return (
     <section id="projects" className="container-page py-24 sm:py-32">
@@ -308,34 +403,21 @@ export default function Projects() {
         />
 
         <div className="mt-12 space-y-6">
-          {featuredProjects.map((project, index) => (
+          {items.map((project, index) => (
             <motion.div
               key={project.id}
               initial={{ opacity: 0, y: 16 }}
               animate={isVisible ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.5, delay: index * 0.15 }}
             >
-              <FeaturedProject project={project} />
+              <ProjectCard project={project} />
             </motion.div>
           ))}
-
-          {otherProjects.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 16 }}
-              animate={isVisible ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: featuredProjects.length * 0.15 }}
-              className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
-            >
-              {otherProjects.map((project) => (
-                <CompactProjectCard key={project.id} project={project} />
-              ))}
-            </motion.div>
-          )}
 
           <motion.div
             initial={{ opacity: 0, y: 16 }}
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.5, delay: (featuredProjects.length + 1) * 0.15 }}
+            transition={{ duration: 0.5, delay: (items.length + 1) * 0.15 }}
           >
             <PlaceholderCard />
           </motion.div>

@@ -36,7 +36,6 @@ export const projects = [
       demo: 'https://tablemaster-frontend.onrender.com',
       github: 'https://github.com/Esteban-GH39/tablemaster',
     },
-    image: null,
   },
   {
     id: 'vigilancia-ia',
@@ -75,7 +74,6 @@ export const projects = [
       demo: 'https://vigilancia-ia-1.onrender.com',
       github: 'https://github.com/Esteban-GH39/vigilancia-ia',
     },
-    image: null,
   },
   {
     id: 'taskflow',
@@ -116,7 +114,6 @@ export const projects = [
     },
     demoNote:
       'El demo usa un plan gratuito: la primera carga puede tardar hasta un minuto y los datos se reinician cada cierto tiempo.',
-    image: null,
   },
   {
     id: 'shortly',
@@ -156,48 +153,92 @@ export const projects = [
     },
     demoNote:
       'El demo usa un plan gratuito: la primera carga puede tardar hasta un minuto y los enlaces creados se borran cuando el servicio se reinicia.',
-    image: null,
   },
   {
-    id: 'parkfinder-api',
-    featured: false,
-    status: 'in-progress',
-    name: 'ParkFinder API',
-    tagline: 'Backend y API REST para gestión de parqueaderos, con arquitectura de microservicios.',
+    id: 'tienda-cqrs',
+    featured: true,
+    name: 'Tienda CQRS',
+    tagline: 'Tienda en línea en vivo que muestra cómo se combinan CQRS, Kafka, RabbitMQ y WebSocket.',
     description:
-      'API backend para el sistema ParkFinder: administra parqueaderos, reservas, usuarios, pagos y notificaciones bajo un enfoque de microservicios.',
-    stack: ['Microservicios', 'REST API'],
+      'Proyecto de Sistemas Distribuidos (Universidad Central): una tienda de pedidos con dos aplicaciones Angular (la Tienda y el Panel de administración), un servidor en Spring Boot, dos bases de datos y dos sistemas de mensajería, hecha para ver funcionando cómo encajan todas las piezas.',
+    problem:
+      'Conceptos como CQRS, mensajería de eventos y consistencia eventual son abstractos: en un diagrama se entienden, pero es difícil ver qué pasa realmente entre servicios cuando entra un pedido.',
+    solution:
+      'Cada pedido recorre el stack completo y una pestaña "Log del stack" muestra en tiempo real el momento exacto en que se usa cada herramienta. Un cambio hecho en una pantalla aparece al instante en todas las demás por WebSocket.',
+    architecture: [
+      { layer: 'Clientes', detail: 'Angular 18 — Tienda y Panel de administración como aplicaciones independientes que comparten servicios (API, tiempo real y log).' },
+      { layer: 'Servidor', detail: 'Java 21 + Spring Boot 3.3 — comandos y consultas separados en código, en API y en base de datos (CQRS).' },
+      { layer: 'Comandos', detail: 'PostgreSQL en Supabase — el pedido y su evento se guardan en una misma transacción (patrón outbox), con migraciones Flyway.' },
+      { layer: 'Eventos', detail: 'Kafka — el outbox publica en un tópico y un proyector consume los eventos.' },
+      { layer: 'Consultas', detail: 'MongoDB — copia del pedido ya preparada para mostrar; las consultas leen solo de ahí.' },
+      { layer: 'Mensajería', detail: 'RabbitMQ — enruta los eventos a colas de trabajo (inventario, facturación, logística) y hace el broadcast.' },
+      { layer: 'Tiempo real', detail: 'WebSocket (STOMP) — avisa a todas las pantallas cuando la copia de lectura ya está lista.' },
+      { layer: 'Infraestructura', detail: 'Docker Compose para levantar todo el stack y GitHub Actions para la integración continua.' },
+    ],
+    challenges: [
+      'Guardar el pedido y publicar su evento sin que uno ocurra sin el otro: el outbox lo resuelve dentro de una sola transacción.',
+      'Convivir con la consistencia eventual: entre el comando y la consulta pasa un instante, por eso el aviso en vivo se envía solo cuando la copia de lectura ya está actualizada.',
+    ],
+    stack: ['Java', 'Spring Boot', 'Angular', 'PostgreSQL', 'MongoDB', 'Kafka', 'RabbitMQ', 'WebSocket', 'Docker'],
     links: {
-      github: 'https://github.com/Esteban-GH39/parkfinder-api',
+      github: 'https://github.com/Esteban-GH39/tienda-cqrs',
     },
-    image: null,
   },
   {
-    id: 'parkfinder-app',
+    id: 'sporty-smash',
     featured: false,
-    status: 'in-progress',
-    name: 'ParkFinder App',
-    tagline: 'App móvil en Flutter para buscar, reservar y gestionar espacios de parqueo.',
+    name: 'Sporty Smash',
+    tagline: 'Juego de combinar balones (match-3) para dos jugadores, en HTML, CSS y JavaScript puro.',
     description:
-      'Aplicación móvil desarrollada con Flutter, consumidora de ParkFinder API, para buscar parqueaderos cercanos, reservar espacio y administrar las reservas del usuario.',
-    stack: ['Flutter', 'Dart'],
+      'Cada jugador elige su deportista y tiene 2:30 minutos para arrastrar un balón a una casilla vecina y alinear 3 o más iguales. Al terminar el tiempo de ambos, gana quien haya sumado más puntos.',
+    stack: ['HTML', 'CSS', 'JavaScript'],
     links: {
-      github: 'https://github.com/Esteban-GH39/parkfinder-app',
+      demo: 'https://esteban-gh39.github.io/sporty-smash/',
+      github: 'https://github.com/Esteban-GH39/sporty-smash',
     },
-    image: null,
+  },
+  {
+    id: 'parkfinder',
+    featured: true,
+    status: 'in-progress',
+    name: 'ParkFinder',
+    tagline: 'Buscar, reservar y pagar parqueadero desde el celular, y administrarlo desde el mismo sistema.',
+    description:
+      'Plataforma de parqueaderos con dos caras: una app móvil para que los conductores encuentren, reserven y paguen su espacio, y un panel para que cada administrador gestione sus cupos y el ingreso y salida de vehículos. Se desarrolla en equipo y vive en dos repositorios: la app (Flutter) y la API (Quarkus).',
+    problem:
+      'Encontrar parqueadero con cupo suele ser dar vueltas sin certeza, y quienes administran un parqueadero llevan reservas, cupos y pagos a mano, sin un registro confiable.',
+    solution:
+      'ParkFinder muestra los parqueaderos por zona con su detalle, permite reservar y pagar desde la app y guía al conductor hasta el lugar con una ruta en el mapa. Del otro lado, el administrador registra y edita su parqueadero, controla los cupos, valida la reserva por código y consulta el historial de ingresos.',
+    architecture: [
+      { layer: 'App móvil', detail: 'Flutter + Dart — pantallas separadas para el cliente (búsqueda, reserva, pago, billetera, calificaciones) y para el administrador.' },
+      { layer: 'Mapas y rutas', detail: 'flutter_map con OpenStreetMap y OSRM, más geolocalización del dispositivo — sin llaves de API.' },
+      { layer: 'Backend', detail: 'Java + Quarkus — API REST organizada por capas (modelo, aplicación, infraestructura, persistencia y DTO).' },
+      { layer: 'Base de datos', detail: 'PostgreSQL, con Hibernate ORM y Panache.' },
+      { layer: 'Documentación', detail: 'OpenAPI para documentar y probar los endpoints.' },
+      { layer: 'Infraestructura', detail: 'Docker para empaquetar la API.' },
+      { layer: 'Trabajo en equipo', detail: 'Una rama por historia de usuario y pull requests hacia develop en ambos repositorios.' },
+    ],
+    stack: ['Flutter', 'Dart', 'Java', 'Quarkus', 'PostgreSQL', 'OpenAPI', 'Docker'],
+    links: {
+      repos: [
+        { label: 'API · Backend', url: 'https://github.com/Esteban-GH39/parkfinder-api' },
+        { label: 'App · Flutter', url: 'https://github.com/Esteban-GH39/parkfinder-app' },
+      ],
+    },
+    // videoUrl: 'https://youtu.be/XXXXXXXXXXX',
+    // captions: { '01-busqueda.png': 'Búsqueda de parqueaderos por zona' },
   },
   {
     id: 'blog-esteban',
     featured: false,
     name: 'Blog personal',
-    tagline: 'Devlog construido con Astro + CMS headless.',
+    tagline: 'Devlog personal construido con Astro + CMS headless.',
     description:
       'Blog personal donde comparto notas sobre los proyectos en los que trabajo y lo que voy aprendiendo en el camino.',
     stack: ['Astro'],
     links: {
       github: 'https://github.com/Esteban-GH39/blog-esteban',
     },
-    image: null,
   },
   {
     id: 'proximo-proyecto',
@@ -209,6 +250,5 @@ export const projects = [
     stack: [],
     features: [],
     links: {},
-    image: null,
   },
 ]
